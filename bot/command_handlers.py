@@ -93,6 +93,7 @@ async def add_name(message: Message, state: FSMContext):
         att = await message.answer("Отправьте фотографию !")
     else:
         att = await message.answer('Такое пиво уже есть !')
+        await state.set_state(FSM_ST.after_start)
 
     users_db[user_id]['zagruz_reply'] = att
     users_db[user_id]['zagruz_data'] = message
