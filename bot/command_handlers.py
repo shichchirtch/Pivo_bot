@@ -48,7 +48,7 @@ async def before_start(message: Message):
 async def process_help(message: Message):
     att = await message.answer(help_text)
     await message.delete()
-    await asyncio.sleep(10)
+    await asyncio.sleep(30)
     await att.delete()
 
 
