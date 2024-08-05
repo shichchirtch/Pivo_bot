@@ -21,6 +21,7 @@ from inline_keyboard import *
 ch_router = Router()
 
 
+
 @ch_router.message(CommandStart())
 async def process_start_command(message: Message, state: FSMContext):
     user_name = message.from_user.first_name
@@ -80,7 +81,11 @@ async def ask_name(message: Message, state: FSMContext):
 async def add_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     name_beer = message.text.strip()
-    if name_beer not in bier_dict:
+    temp_arr = []
+    for name in bier_dict.keys():
+        temp_arr.append(name.lover())
+
+    if name_beer.lower() not in temp_arr:
         if len(name_beer) > 100:
             name_beer = message.text.strip()[:100]
         await state.set_state(FSM_ST.add_foto)
