@@ -83,7 +83,7 @@ async def add_name(message: Message, state: FSMContext):
     name_beer = message.text.strip()
     temp_arr = []
     for name in bier_dict.keys():
-        temp_arr.append(name.lover())
+        temp_arr.append(name.lower())
 
     if name_beer.lower() not in temp_arr:
         if len(name_beer) > 100:
