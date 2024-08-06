@@ -215,7 +215,6 @@ async def something_goes_wrong(message: Message, state: FSMContext):
 async def show_collection(message: Message):
     user_id  = message.from_user.id
 
-    # from contextlib import suppress
     temp_msg = users_db[user_id]['temp_msg']
     if temp_msg:
         with suppress(TelegramBadRequest):
@@ -239,9 +238,11 @@ async def show_collection(message: Message):
 
 
     if bier_dict:
+        quantity_arts = len(bier_dict)-1
+        vull_collection = f'{beer_collection}\nОбщее количество сортов - <b>{quantity_arts}</b>'
         if len(bier_dict)<101:
             att = await message.answer(
-                text=beer_collection,
+                text=vull_collection,
                 reply_markup=create_beer_collection_keyboard(*bier_dict.keys()))
             users_db[user_id]['zagruz_reply'] = att
         else:
@@ -256,7 +257,7 @@ async def show_collection(message: Message):
                 reply_markup=create_beer_collection_keyboard(*first_hundred))
 
             att2 = await message.answer(
-                text=beer_collection,
+                text=vull_collection,
                 reply_markup=create_beer_collection_keyboard(*rest))
             users_db[user_id]['zagruz_data'] = att2
             users_db[user_id]['zagruz_reply'] = att
@@ -315,6 +316,8 @@ async def poisk_beer(message: Message, state: FSMContext):
     att = await message.answer('Какое Пиво ищете ?\nВведите название')
     users_db[user_id]['zagruz_data'] = message
     users_db[user_id]['zagruz_reply'] = att
+
+
 
 @ch_router.message(StateFilter(FSM_ST.poisk), F.text)
 async def get_beer_info(message: Message, state: FSMContext):
@@ -388,7 +391,7 @@ async def dump_db(message: Message, state:FSMContext):
     await state.set_state(FSM_ST.after_start)
 
 @ch_router.message(StateFilter(FSM_ST.admin),Command('load'))
-async def dump_db(message: Message, state:FSMContext):
+async def load_db(message: Message, state:FSMContext):
     with open('save_db.pkl', 'rb') as file:
         recover_base = pickle.load(file)
         bier_dict.update(recover_base)
@@ -401,10 +404,12 @@ async def delete_position(message: Message, state:FSMContext):
     await message.answer('Admin will delete now')
     await state.set_state(FSM_ST.delete_record)
 
-@ch_router.message(StateFilter(FSM_ST.delete_record), Command('break'))
+
+@ch_router.message(StateFilter(FSM_ST.delete_record, FSM_ST.delete_otzyv), Command('break'))
 async def delete_position(message: Message, state:FSMContext):
     await message.answer('Admin out')
     await state.set_state(FSM_ST.after_start)
+
 
 @ch_router.message(StateFilter(FSM_ST.delete_record), F.text)
 async def delete_position(message: Message):
@@ -415,6 +420,29 @@ async def delete_position(message: Message):
                              '/break')
     else:
         await message.answer('Wrong key')
+
+@ch_router.message(StateFilter(FSM_ST.admin), Command('delete_otzyv'))
+async def process_delete_otzyv_command(message: Message, state:FSMContext):
+    await message.answer('Admin will delete OTZYV now')
+    await state.set_state(FSM_ST.delete_otzyv)
+
+
+@ch_router.message(StateFilter(FSM_ST.delete_otzyv), F.text)
+async def delete_otzyv(message: Message):
+    deleted_record ='🔸 ' + message.text
+    key = users_db[message.from_user.id]['look_now']
+    needed_art = bier_dict[key]
+    otzyv_list = needed_art.comments
+    for tayli, otzyv in enumerate(otzyv_list, 0):
+        if otzyv.startswith(deleted_record):
+            del otzyv_list[tayli]
+            await message.answer('Перезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+                             '/break')
+            break
+        else:
+            await message.answer('Wrong chunk')
+    needed_art.comments = otzyv_list
+
 
 @ch_router.message()
 async def crush_tresh(message: Message):

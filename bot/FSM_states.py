@@ -16,4 +16,5 @@ class FSM_ST(StatesGroup):
     admin=State()
     delete_record = State()
     poisk = State()
+    delete_otzyv = State()
 
