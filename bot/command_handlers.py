@@ -285,7 +285,7 @@ async def write_review(message: Message, state: FSMContext):
         foto_id = message.photo[-1].file_id
         capcha = message.caption
         full_capcha = f'🔸 {capcha}\n\n{current_time}\n{user_name}'
-        # await message.answer(full_capcha)
+
         nedeed_beer = bier_dict[current_beer]  # Получаю ЭК Beer_Art
         otzyv_list = nedeed_beer.comments
         updated_list = otzyv_list + [(foto_id, full_capcha,)]
@@ -434,13 +434,22 @@ async def delete_otzyv(message: Message):
     needed_art = bier_dict[key]
     otzyv_list = needed_art.comments
     for tayli, otzyv in enumerate(otzyv_list, 0):
-        if otzyv.startswith(deleted_record):
-            del otzyv_list[tayli]
-            await message.answer('Перезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
-                             '/break')
-            break
+        if isinstance(otzyv, str):
+            if otzyv.startswith(deleted_record):
+                del otzyv_list[tayli]
+                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+                                 '/break')
+                break
+            else:
+                await message.answer('Wrong chunk')
         else:
-            await message.answer('Wrong chunk')
+            if otzyv[1].endswith(deleted_record):
+                del otzyv_list[tayli]
+                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+                                 '/break')
+                break
+            else:
+                await message.answer('Wrong chunk')
     needed_art.comments = otzyv_list
 
 
