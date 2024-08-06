@@ -8,9 +8,10 @@ def create_beer_collection_keyboard(*args) -> InlineKeyboardMarkup:
     # Наполняем клавиатуру кнопками-закладками в порядке возрастания
 
     for button in sorted(args):
-        kb_builder.row(InlineKeyboardButton(
-            text=button,
-            callback_data=button))
+        if button != 'beer_keys':
+            kb_builder.row(InlineKeyboardButton(
+                text=button,
+                callback_data=button))
     return kb_builder.as_markup()
 
 
