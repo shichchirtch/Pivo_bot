@@ -69,28 +69,39 @@ async def exit_review(message: Message, state: FSMContext):
 
 @ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'))
 async def ask_name(message: Message, state: FSMContext):
+    user_id = message.from_user.id
     att = await message.answer('Как называется Пиво ?')
     await state.set_state(FSM_ST.add_name)
     await state.set_data({'name':'', 'foto':'', 'desc':'', 'rating': 0, 'comments': [], 'like':0, 'total': 0})
-    await asyncio.sleep(14)
-    await message.delete()
-    await att.delete()
+    users_db[user_id]['zagruz_reply'] = att
+    users_db[user_id]['zagruz_data'] = message
 
 
 @ch_router.message(StateFilter(FSM_ST.add_name), F.text)
 async def add_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     name_beer = message.text.strip()
-    temp_arr = []
-    for name in bier_dict.keys():
-        temp_arr.append(name.lower())
+    # temp_arr = []
+    # for name in bier_dict.keys():
+    #     temp_arr.append(name.lower())
 
-    if name_beer.lower() not in temp_arr:
+    if name_beer.lower() not in bier_dict['beer_keys']:
         if len(name_beer) > 100:
             name_beer = message.text.strip()[:100]
         await state.set_state(FSM_ST.add_foto)
         await state.update_data(name=name_beer)
         att = await message.answer("Отправьте фотографию !")
+
+        with suppress(TelegramBadRequest):
+            msg = users_db[user_id]['zagruz_data']
+            await msg.delete()
+        users_db[user_id]['zagruz_data'] = message
+
+        with suppress(TelegramBadRequest):
+            msg = users_db[user_id]['zagruz_reply']
+            await msg.delete()
+        users_db[user_id]['zagruz_reply'] = att
+
     else:
         att = await message.answer('Такое пиво уже есть !')
         await state.set_state(FSM_ST.after_start)
@@ -98,8 +109,8 @@ async def add_name(message: Message, state: FSMContext):
         await message.delete()
         await att.delete()
 
-    users_db[user_id]['zagruz_reply'] = att
-    users_db[user_id]['zagruz_data'] = message
+        users_db[user_id]['zagruz_reply'] = ''
+        users_db[user_id]['zagruz_data'] = ''
 
 
 @ch_router.message(StateFilter(FSM_ST.add_foto), F.photo)
@@ -150,6 +161,7 @@ async def add_desc(message: Message, state: FSMContext):
 
     bier_dict[beer_name] = Beer_Art(name=beer_name, foto=foto, descripion=desc)
     print('beer_name = ', beer_name)
+    bier_dict.get('beer_keys', []).append(beer_name.lower())
     test = bier_dict[beer_name]
     print('test.comments = ', test.comments, 'test.name = ', test.name)
     await state.set_state(FSM_ST.after_start)
@@ -204,6 +216,8 @@ async def something_goes_wrong(message: Message, state: FSMContext):
 @ch_router.message(StateFilter(FSM_ST.after_start), Command('show_collection'))
 async def show_collection(message: Message):
     user_id  = message.from_user.id
+
+    # from contextlib import suppress
     temp_msg = users_db[user_id]['temp_msg']
     if temp_msg:
         with suppress(TelegramBadRequest):
@@ -322,7 +336,7 @@ async def get_beer_info(message: Message, state: FSMContext):
             await otvet.delete()
         users_db[user_id]['zagruz_reply'] = ''
 
-    if art_beer in bier_dict:
+    if art_beer in bier_dict['beer_keys']:
         users_db[user_id]['look_now'] = art_beer
         needed_beer = bier_dict[art_beer]
         foto_beer = needed_beer.foto
