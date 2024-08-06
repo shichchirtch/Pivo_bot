@@ -429,12 +429,13 @@ async def process_delete_otzyv_command(message: Message, state:FSMContext):
 
 @ch_router.message(StateFilter(FSM_ST.delete_otzyv), F.text)
 async def delete_otzyv(message: Message):
-    deleted_record ='🔸 ' + message.text
+
     key = users_db[message.from_user.id]['look_now']
     needed_art = bier_dict[key]
     otzyv_list = needed_art.comments
     for tayli, otzyv in enumerate(otzyv_list, 0):
         if isinstance(otzyv, str):
+            deleted_record = '🔸 ' + message.text
             if otzyv.startswith(deleted_record):
                 del otzyv_list[tayli]
                 await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
@@ -443,13 +444,13 @@ async def delete_otzyv(message: Message):
             else:
                 await message.answer('Wrong chunk')
         else:
-            if otzyv[1].endswith(deleted_record):
+            if otzyv[1].endswith(message.text):
                 del otzyv_list[tayli]
                 await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
                                  '/break')
                 break
             else:
-                await message.answer('Wrong chunk')
+                await message.answer('Wrong foto chunk')
     needed_art.comments = otzyv_list
 
 
