@@ -1,4 +1,4 @@
-bier_dict = {'beer_keys', []}  # База данных ПИВА
+bier_dict = {'beer_keys':[]}  # База данных ПИВА
 
 class Beer_Art:
     def __init__(self, name:str, foto:str, descripion:str):
