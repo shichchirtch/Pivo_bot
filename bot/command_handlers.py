@@ -81,9 +81,14 @@ async def ask_name(message: Message, state: FSMContext):
 async def add_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     name_beer = message.text.strip()
-    # temp_arr = []
-    # for name in bier_dict.keys():
-    #     temp_arr.append(name.lower())
+
+    with suppress(TelegramBadRequest):
+        msg = users_db[user_id]['zagruz_reply']
+        await msg.delete()
+
+    with suppress(TelegramBadRequest):
+        msg = users_db[user_id]['zagruz_data']
+        await msg.delete()
 
     if name_beer.lower() not in bier_dict['beer_keys']:
         if len(name_beer) > 100:
@@ -92,14 +97,7 @@ async def add_name(message: Message, state: FSMContext):
         await state.update_data(name=name_beer)
         att = await message.answer("Отправьте фотографию !")
 
-        with suppress(TelegramBadRequest):
-            msg = users_db[user_id]['zagruz_data']
-            await msg.delete()
         users_db[user_id]['zagruz_data'] = message
-
-        with suppress(TelegramBadRequest):
-            msg = users_db[user_id]['zagruz_reply']
-            await msg.delete()
         users_db[user_id]['zagruz_reply'] = att
 
     else:
