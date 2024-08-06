@@ -383,7 +383,7 @@ async def go_to_admin_state(message: Message, state: FSMContext):
     await message.answer(admin_enter)
 
 
-@ch_router.message(StateFilter(FSM_ST.admin),Command('dump'))
+@ch_router.message(StateFilter(FSM_ST.admin, FSM_ST.delete_otzyv, FSM_ST.delete_record),Command('dump'))
 async def dump_db(message: Message, state:FSMContext):
     with open('save_db.pkl', 'wb') as file:
         pickle.dump(bier_dict, file)
@@ -416,7 +416,7 @@ async def delete_position(message: Message):
     deleted_record = message.text
     if deleted_record in bier_dict:
         del bier_dict[deleted_record]
-        await message.answer('Перезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+        await message.answer('Перезапишите БД, если закончили    /dump\n\nесли нет - продолжайте удаление\n\n'
                              '/break')
     else:
         await message.answer('Wrong key')
@@ -438,7 +438,7 @@ async def delete_otzyv(message: Message):
             deleted_record = '🔸 ' + message.text
             if otzyv.startswith(deleted_record):
                 del otzyv_list[tayli]
-                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n если нет - продолжайте удаление\n\n'
                                  '/break')
                 break
             else:
@@ -446,7 +446,7 @@ async def delete_otzyv(message: Message):
         else:
             if otzyv[1].endswith(message.text):
                 del otzyv_list[tayli]
-                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили    /dump\n\n, если нет - продолжайте удаление\n\n'
+                await message.answer('Отзыв удалёт\n\nПерезапишите БД, если закончили   /dump\n\n если нет - продолжайте удаление\n\n'
                                  '/break')
                 break
             else:
