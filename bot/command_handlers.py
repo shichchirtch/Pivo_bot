@@ -35,7 +35,9 @@ async def process_start_command(message: Message, state: FSMContext):
                                   f'Чтобы узнать о моих возможнотях нажмите\n\n /help',
                              parse_mode=ParseMode.HTML,
                              reply_markup=ReplyKeyboardRemove())
-
+    else:
+        users_db[message.from_user.id] = deepcopy(user_dict) # Просто создаю юзеру БД для сообщений
+        await message.answer('Бот перезапущен на сервере')
 
 @ch_router.message(PRE_START())
 async def before_start(message: Message):
