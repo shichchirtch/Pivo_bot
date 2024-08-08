@@ -67,8 +67,9 @@ async def exit_review(message: Message, state: FSMContext):
             await temp_message.delete()
     await asyncio.sleep(1.5)
     await message.delete()
-    users_db[user_id]['temp_msg'] = ''
     await state.set_state(FSM_ST.after_start)
+    att = await message.answer('Вы вышли из режима добавления пива или написания отзыва(((')
+    users_db[user_id]['temp_msg'] = att
 
 
 @ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'))
