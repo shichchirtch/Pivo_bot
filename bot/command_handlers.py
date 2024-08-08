@@ -91,8 +91,10 @@ async def add_name(message: Message, state: FSMContext):
     with suppress(TelegramBadRequest):
         msg = users_db[user_id]['zagruz_data']
         await msg.delete()
+    if name_beer.startswith('/'):
+        await message.answer('Вы в режиме добавдения пива !\n\nВведите название или нажмите   /exit')
 
-    if name_beer.lower() not in bier_dict['beer_keys']:
+    elif name_beer.lower() not in bier_dict['beer_keys']:
         if len(name_beer) > 100:
             name_beer = message.text.strip()[:100]
         await state.set_state(FSM_ST.add_foto)
@@ -215,7 +217,7 @@ async def something_goes_wrong(message: Message, state: FSMContext):
 
 @ch_router.message(StateFilter(FSM_ST.after_start), Command('show_collection'))
 async def show_collection(message: Message):
-    user_id  = message.from_user.id
+    user_id = message.from_user.id
 
     temp_msg = users_db[user_id]['temp_msg']
     if temp_msg:
@@ -408,7 +410,7 @@ async def delete_position(message: Message, state:FSMContext):
 
 
 @ch_router.message(StateFilter(FSM_ST.delete_record, FSM_ST.delete_otzyv), Command('break'))
-async def delete_position(message: Message, state:FSMContext):
+async def break_position(message: Message, state:FSMContext):
     await message.answer('Admin out')
     await state.set_state(FSM_ST.after_start)
 
