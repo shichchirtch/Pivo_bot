@@ -55,7 +55,7 @@ async def process_help(message: Message):
     await att.delete()
 
 
-@ch_router.message(StateFilter(FSM_ST.write_review), Command('exit'))
+@ch_router.message(StateFilter(FSM_ST.write_review, FSM_ST.add_foto, FSM_ST.add_name), Command('exit'))
 async def exit_review(message: Message, state: FSMContext):
     user_id = message.from_user.id
     users_db[user_id]['look_now'] = ''
