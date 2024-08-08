@@ -61,6 +61,11 @@ class EXIT_FILTER(BaseFilter):
         return True
 
 
+class EXCLUDE_COMMAND(BaseFilter):
+    async def __call__(self, message: Message):
+        if message.text in ('/show_collection', '/add_new_beer', '/poisk', '/help'):
+            return False
+        return True
 
 
 

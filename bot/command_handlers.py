@@ -6,7 +6,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart, Command, StateFilter
 from beer_collection import *
 from database import user_dict, users_db
-from filters import PRE_START, IS_ADMIN, EXIT_FILTER
+from filters import PRE_START, IS_ADMIN, EXIT_FILTER, EXCLUDE_COMMAND
 from lexicon import *
 from postgress_function import *
 from copy import deepcopy
@@ -280,12 +280,18 @@ async def show_collection(message: Message):
 
 
 
-@ch_router.message(StateFilter(FSM_ST.write_review), F.content_type.in_({'photo', 'text'}))
+@ch_router.message(StateFilter(FSM_ST.write_review), F.content_type.in_({'photo', 'text'}), EXCLUDE_COMMAND())
 async def write_review(message: Message, state: FSMContext):
     user_id = message.from_user.id
     user_name = message.from_user.first_name
     current_time = message.date.date().strftime("%d.%m.%Y")
     current_beer = users_db[user_id]['look_now']
+    temp_message = users_db[user_id]['zagruz_reply']
+    if temp_message:
+        with suppress(TelegramBadRequest):
+            await temp_message.delete()
+        users_db[user_id]['zagruz_reply'] = ''
+
     if message.text:
         new_review = message.text
         full_review = f'🔸 {new_review}\n\n{current_time}\n{user_name}'

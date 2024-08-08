@@ -96,11 +96,17 @@ async def process_show_review(callback: CallbackQuery):
 
 @inline_router.callback_query(WRITE_REVIEW(), StateFilter(FSM_ST.after_start))
 async def process_write_review(callback: CallbackQuery, state:FSMContext):
+    user_id = callback.from_user.id
     await state.set_state(FSM_ST.write_review)
     att = await callback.message.answer(write_review)
     await callback.answer()
-    await asyncio.sleep(4)
-    await att.delete()
+    temp_message = users_db[user_id]['zagruz_reply']
+    if temp_message:
+        with suppress(TelegramBadRequest):
+            await temp_message.delete()
+        users_db[user_id]['zagruz_reply'] = att
+
+
 
 
 
