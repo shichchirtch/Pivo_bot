@@ -69,7 +69,7 @@ async def exit_review(message: Message, state: FSMContext):
     await state.set_state(FSM_ST.after_start)
 
 
-@ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'), EXIT_FILTER())
+@ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'))
 async def ask_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     att = await message.answer('Как называется Пиво ?')
@@ -79,7 +79,7 @@ async def ask_name(message: Message, state: FSMContext):
     users_db[user_id]['zagruz_data'] = message
 
 
-@ch_router.message(StateFilter(FSM_ST.add_name), F.text)
+@ch_router.message(StateFilter(FSM_ST.add_name), F.text, EXIT_FILTER())
 async def add_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     name_beer = message.text.strip()
