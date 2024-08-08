@@ -286,6 +286,7 @@ async def write_review(message: Message, state: FSMContext):
     user_name = message.from_user.first_name
     current_time = message.date.date().strftime("%d.%m.%Y")
     current_beer = users_db[user_id]['look_now']
+
     temp_message = users_db[user_id]['zagruz_reply']
     if temp_message:
         with suppress(TelegramBadRequest):

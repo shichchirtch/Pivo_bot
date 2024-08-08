@@ -104,7 +104,7 @@ async def process_write_review(callback: CallbackQuery, state:FSMContext):
     if temp_message:
         with suppress(TelegramBadRequest):
             await temp_message.delete()
-        users_db[user_id]['zagruz_reply'] = att
+    users_db[user_id]['zagruz_reply'] = att
 
 
 
