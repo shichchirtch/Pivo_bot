@@ -6,7 +6,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram.filters import CommandStart, Command, StateFilter
 from beer_collection import *
 from database import user_dict, users_db
-from filters import PRE_START, IS_ADMIN
+from filters import PRE_START, IS_ADMIN, EXIT_FILTER
 from lexicon import *
 from postgress_function import *
 from copy import deepcopy
@@ -69,7 +69,7 @@ async def exit_review(message: Message, state: FSMContext):
     await state.set_state(FSM_ST.after_start)
 
 
-@ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'))
+@ch_router.message(StateFilter(FSM_ST.after_start), Command('add_new_beer'), EXIT_FILTER())
 async def ask_name(message: Message, state: FSMContext):
     user_id = message.from_user.id
     att = await message.answer('Как называется Пиво ?')
@@ -91,6 +91,7 @@ async def add_name(message: Message, state: FSMContext):
     with suppress(TelegramBadRequest):
         msg = users_db[user_id]['zagruz_data']
         await msg.delete()
+
     if name_beer.startswith('/'):
         await message.answer('Вы в режиме добавдения пива !\n\nВведите название или нажмите   /exit')
 

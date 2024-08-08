@@ -54,6 +54,11 @@ class IS_ADMIN(BaseFilter):
         return False
 
 
+class EXIT_FILTER(BaseFilter):
+    async def __call__(self, message: Message):
+        if message.text == '/exit':
+            return False
+        return True
 
 
 
