@@ -55,14 +55,16 @@ async def process_help(message: Message):
     await att.delete()
 
 
-@ch_router.message(StateFilter(FSM_ST.write_review, FSM_ST.add_foto, FSM_ST.add_name), Command('exit'))
+@ch_router.message(Command('exit'))
 async def exit_review(message: Message, state: FSMContext):
     user_id = message.from_user.id
     users_db[user_id]['look_now'] = ''
     await state.update_data(name='', foto='', desc='')
-    with suppress(TelegramBadRequest):
-        temp_message = users_db[user_id]['temp_msg']
-        await temp_message.delete()
+    temp_msg = users_db[user_id]['temp_msg']
+    if temp_msg:
+        with suppress(TelegramBadRequest):
+            temp_message = users_db[user_id]['temp_msg']
+            await temp_message.delete()
     await asyncio.sleep(1.5)
     await message.delete()
     users_db[user_id]['temp_msg'] = ''
@@ -92,8 +94,15 @@ async def add_name(message: Message, state: FSMContext):
         msg = users_db[user_id]['zagruz_data']
         await msg.delete()
 
+    temp_msg = users_db[user_id]['temp_msg']
+    if temp_msg:
+        with suppress(TelegramBadRequest):
+            temp_message = users_db[user_id]['temp_msg']
+            await temp_message.delete()
+
     if name_beer.startswith('/'):
-        await message.answer('Вы в режиме добавдения пива !\n\nВведите название или нажмите   /exit')
+        att  = await message.answer('Вы в режиме добавдения пива !\n\nВведите название или нажмите   /exit')
+        users_db[user_id]['temp_msg'] = att
 
     elif name_beer.lower() not in bier_dict['beer_keys']:
         if len(name_beer) > 100:
