@@ -465,8 +465,9 @@ async def delete_position(message: Message):
     name_list = bier_dict['beer_keys']
     if deleted_record in bier_dict:
         del bier_dict[deleted_record]
-        name_list.remove(deleted_record)
-        await message.answer('Перезапишите БД, если закончили    /dump\n\nесли нет - продолжайте удаление\n\n'
+        name_list.remove(deleted_record.lower())
+        await message.answer('Перезапишите БД, если закончили    /dump\n\n'
+                             'если нет - продолжайте удаление\n\n'
                              '/break')
     else:
         await message.answer('Wrong key')
