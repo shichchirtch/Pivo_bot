@@ -196,7 +196,7 @@ async def add_desc(message: Message, state: FSMContext):
     await test_att.delete()
 
 
-@ch_router.message(StateFilter(FSM_ST.edit_desc), F.text)
+@ch_router.message(StateFilter(FSM_ST.edit_desc), F.text, EXCLUDE_COMMAND())
 async def edit_desc(message: Message, state: FSMContext):
     beer_art = await state.get_data()
     foto = beer_art['foto']
