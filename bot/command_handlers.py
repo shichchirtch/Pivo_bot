@@ -65,6 +65,13 @@ async def exit_review(message: Message, state: FSMContext):
         with suppress(TelegramBadRequest):
             temp_message = users_db[user_id]['temp_msg']
             await temp_message.delete()
+
+    temp_msg = users_db[user_id]['zagruz_reply']
+    if temp_msg:
+        with suppress(TelegramBadRequest):
+            temp_message = users_db[user_id]['zagruz_reply']
+            await temp_message.delete()
+    users_db[user_id]['zagruz_reply'] = ''
     await asyncio.sleep(1.5)
     await message.delete()
     await state.set_state(FSM_ST.after_start)
@@ -145,7 +152,7 @@ async def add_foto(message: Message, state: FSMContext):
     users_db[user_id]['zagruz_reply'] = att
 
 
-@ch_router.message(StateFilter(FSM_ST.add_desc), F.text)
+@ch_router.message(StateFilter(FSM_ST.add_desc), F.text, EXCLUDE_COMMAND())
 async def add_desc(message: Message, state: FSMContext):
     await state.set_state(FSM_ST.edit_desc)
     user_id = message.from_user.id
@@ -160,21 +167,26 @@ async def add_desc(message: Message, state: FSMContext):
     att = await message.answer('У вас есть  2 минуты, чтобы отредактировать описание !\n\n'
                                'Если не хотите ничего редактировать - просто подождите немного')
 
+    name_plus_desc = f'Пиво <b>{beer_name}</b>\n\n{desc}'
+
+
     await state.update_data(desc=desc)
-    att2 = await message.answer(f'<b>Ваше описание</b>  ⬇️\n\n{desc}')
+    att2 = await message.answer(f'<b>Ваше описание</b>  ⬇️\n\n{name_plus_desc}')
 
     await sleep(100)
     current_dict = await state.get_data()
     desc = current_dict['desc']
+
     if desc !=message.text:
         await state.update_data(desc=desc)
 
     new_beer_art = await state.get_data()
-    desc = new_beer_art['desc']
+    new_beer_art['desc'] = name_plus_desc
 
-    bier_dict[beer_name] = Beer_Art(name=beer_name, foto=foto, descripion=desc)
+
+    bier_dict[beer_name] = Beer_Art(name=beer_name, foto=foto, descripion=name_plus_desc)
     print('beer_name = ', beer_name)
-    bier_dict.get('beer_keys', []).append(beer_name.lower())
+    bier_dict.get('beer_keys', []).append(beer_name.lower()) # Добавляю пиво в список названий, чтобы потом оттуда его доставать, сверять и т.д
     test = bier_dict[beer_name]
     print('test.comments = ', test.comments, 'test.name = ', test.name)
     await state.set_state(FSM_ST.after_start)
@@ -204,7 +216,7 @@ async def edit_desc(message: Message, state: FSMContext):
     desc = message.text
     if len(desc) > 800:
         desc = message.text[:800]
-    await state.update_data(desc=desc)
+    await state.update_data(desc=desc) # Перезаписываю описание в редис
     att = await message.answer_photo(photo=foto, caption=desc)
     await asyncio.sleep(10)
     await message.delete()
@@ -216,6 +228,20 @@ async def something_goes_wrong(message: Message, state: FSMContext):
     print('something_goes_wrong')
     user_id = message.from_user.id
     users_db[user_id]['look_now'] = ''
+
+
+    temp_msg = users_db[user_id]['zagruz_reply']
+    if temp_msg:
+        with suppress(TelegramBadRequest):
+            msg = users_db[user_id]['zagruz_reply']
+            await msg.delete()
+
+    temp_msg = users_db[user_id]['zagruz_data']
+    if temp_msg:
+        with suppress(TelegramBadRequest):
+            msg = users_db[user_id]['zagruz_data']
+            await msg.delete()
+
     users_db[user_id]['zagruz_reply'] = ''
     users_db[user_id]['zagruz_data'] = ''
     await state.update_data(name='', foto='', desc='')
