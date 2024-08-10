@@ -462,8 +462,10 @@ async def break_position(message: Message, state:FSMContext):
 @ch_router.message(StateFilter(FSM_ST.delete_record), F.text)
 async def delete_position(message: Message):
     deleted_record = message.text
+    name_list = bier_dict['beer_keys']
     if deleted_record in bier_dict:
         del bier_dict[deleted_record]
+        name_list.remove(deleted_record)
         await message.answer('Перезапишите БД, если закончили    /dump\n\nесли нет - продолжайте удаление\n\n'
                              '/break')
     else:
