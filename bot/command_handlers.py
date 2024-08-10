@@ -177,7 +177,7 @@ async def add_desc(message: Message, state: FSMContext):
     current_dict = await state.get_data()
     desc = current_dict['desc']
 
-    if desc !=message.text:
+    if desc != message.text:
         await state.update_data(desc=desc)
 
     new_beer_art = await state.get_data()
