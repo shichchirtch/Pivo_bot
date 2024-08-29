@@ -63,21 +63,25 @@ class EXIT_FILTER(BaseFilter):
 
 class EXCLUDE_COMMAND(BaseFilter):
     async def __call__(self, message: Message):
-        if message.text in ('/show_collection', '/add_new_beer', '/poisk', '/help'):
-            return False
-        elif message.text.startswith('/show_collection') or message.text.endswith('/show_collection'):
-            return False
+        if message.text:
+            if message.text in ('/show_collection', '/add_new_beer', '/poisk', '/help'):
+                return False
+            elif message.text.startswith('/show_collection') or message.text.endswith('/show_collection'):
+                return False
 
-        elif message.text.startswith('/add_new_beer') or message.text.endswith('/add_new_beer'):
-            return False
+            elif message.text.startswith('/add_new_beer') or message.text.endswith('/add_new_beer'):
+                return False
 
-        elif message.text.startswith('/poisk') or message.text.endswith('/poisk'):
-            return False
+            elif message.text.startswith('/poisk') or message.text.endswith('/poisk'):
+                return False
 
-        elif message.text.startswith('/help') or message.text.endswith('/help'):
-            return False
+            elif message.text.startswith('/help') or message.text.endswith('/help'):
+                return False
+            else:
+                return True
         else:
             return True
+
 
 
 
