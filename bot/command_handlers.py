@@ -389,6 +389,14 @@ async def get_beer_info(message: Message, state: FSMContext):
 
     if art_beer.lower() in bier_dict['beer_keys']:
         users_db[user_id]['look_now'] = art_beer
+        if art_beer not in bier_dict:
+            art_beer = art_beer.capitalize()
+            if art_beer not in bier_dict:
+                art_beer = art_beer.upper()
+                if art_beer not in bier_dict:
+                    await message.answer('Название этого пива записано иначе, найдитe его сами в коллекции')
+                    await state.set_state(FSM_ST.after_start)
+
         needed_beer = bier_dict[art_beer]
         foto_beer = needed_beer.foto
         description = needed_beer.description
@@ -426,6 +434,7 @@ async def get_beer_info(message: Message, state: FSMContext):
 
     await state.set_state(FSM_ST.after_start)
 
+############################################ADMIN#############################################
 
 @ch_router.message(Command('admin'), IS_ADMIN())
 async def go_to_admin_state(message: Message, state: FSMContext):
