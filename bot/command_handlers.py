@@ -369,7 +369,7 @@ async def poisk_beer(message: Message, state: FSMContext):
 
 
 
-@ch_router.message(StateFilter(FSM_ST.poisk), F.text, EXCLUDE_COMMAND)
+@ch_router.message(StateFilter(FSM_ST.poisk), F.text, EXCLUDE_COMMAND())
 async def get_beer_info(message: Message, state: FSMContext):
     user_id = message.from_user.id
     art_beer = message.text.strip()
