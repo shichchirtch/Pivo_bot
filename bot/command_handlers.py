@@ -394,8 +394,18 @@ async def get_beer_info(message: Message, state: FSMContext):
             if art_beer not in bier_dict:
                 art_beer = art_beer.upper()
                 if art_beer not in bier_dict:
-                    await message.answer('Название этого пива записано иначе, найдитe его сами в коллекции')
-                    await state.set_state(FSM_ST.after_start)
+                    art_beer_split = art_beer.split()
+                    if len(art_beer_split)==2:
+                        t_1 = art_beer_split[0].capitalize()
+                        t_2 = art_beer_split[1].capitalize()
+                        art_beer = t_1 + ' '+ t_2
+                        if art_beer not in bier_dict:
+                            await message.answer('Название этого пива записано иначе, найдитe его сами в коллекции')
+                            await state.set_state(FSM_ST.after_start)
+
+                    else:
+                        await message.answer('Название этого пива записано иначе, найдитe его сами в коллекции')
+                        await state.set_state(FSM_ST.after_start)
 
         needed_beer = bier_dict[art_beer]
         foto_beer = needed_beer.foto
