@@ -20,14 +20,15 @@ inline_router = Router()
 
 @inline_router.callback_query(NAME_CALLBACK_DATA(), StateFilter(FSM_ST.after_start))
 async def process_beer_art_press(callback: CallbackQuery):
+    """Срабатывает на нажатие на каллбэк кнопку с названием пива"""
     user_id = callback.from_user.id
     print('callbackdata = ', callback.data, type(callback.data))
     users_db[user_id]['look_now'] = callback.data
-    beer_key = callback.data
-    needed_beer = bier_dict[beer_key]
-    foto_beer = needed_beer.foto
-    description = needed_beer.description
-    rating = needed_beer.rating
+    beer_key = callback.data   # получаю ключ - названеи пива
+    needed_beer = bier_dict[beer_key]  # получаю ЭК Berr_Art
+    foto_beer = needed_beer.foto   # Получаю фото
+    description = needed_beer.description   #  Получаю описание
+    rating = needed_beer.rating   #  получаю рейтинг
     full_desc = f'{description}\n\nРейтинг Пива -   {rating}   Отзывы  # {len(needed_beer.comments)}'
 
     temp_message = users_db[user_id]['zagruz_reply']
@@ -71,16 +72,17 @@ async def process_beer_art_press(callback: CallbackQuery):
 @inline_router.callback_query(VIEW_REVIEW(), StateFilter(FSM_ST.after_start))
 async def process_show_review(callback: CallbackQuery):
     user_id = callback.from_user.id
-    beer_key = users_db[user_id]['look_now']
-    needed_beer = bier_dict[beer_key]
-    otzyv_arr = needed_beer.comments
-    if otzyv_arr:
-        for review in otzyv_arr:
+    beer_key = users_db[user_id]['look_now']  #  Получаю название рассматриываемого пива
+    needed_beer = bier_dict[beer_key]   #  получаю ЭК Beer_Art
+    otzyv_arr = needed_beer.comments  #  прлучаю список отзывов
+    if otzyv_arr:  # Если есть отзывы
+        for review in otzyv_arr:  #  В цикле перебираю все отзывы
             if isinstance(review, str):
-                await callback.message.answer(text=review)
+                await callback.message.answer(text=review)  # Отправляю сообщение
                 await asyncio.sleep(0.3)
             else:
                 await callback.message.answer_photo(photo=review[0], caption=review[1])
+                await asyncio.sleep(0.3)
         with suppress(TelegramBadRequest):
             temp_message = users_db[user_id]['temp_msg']
             await temp_message.delete()

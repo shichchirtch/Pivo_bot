@@ -331,6 +331,7 @@ async def write_review(message: Message, state: FSMContext):
 
     else:
         foto_id = message.photo[-1].file_id
+        print('foto_id = ', foto_id)
         capcha = message.caption
         full_capcha = f'🔸 {capcha}\n\n{current_time}\n{user_name}'
 
@@ -338,6 +339,7 @@ async def write_review(message: Message, state: FSMContext):
         otzyv_list = nedeed_beer.comments
         updated_list = otzyv_list + [(foto_id, full_capcha,)]
         nedeed_beer.comments = updated_list
+        print('nedeed_beer.comments = ', nedeed_beer.comments)
 
     att = await message.answer(successfully_add, reply_markup=create_one_button_keyboard(current_beer))
 
@@ -367,7 +369,7 @@ async def poisk_beer(message: Message, state: FSMContext):
 
 
 
-@ch_router.message(StateFilter(FSM_ST.poisk), F.text)
+@ch_router.message(StateFilter(FSM_ST.poisk), F.text, EXCLUDE_COMMAND)
 async def get_beer_info(message: Message, state: FSMContext):
     user_id = message.from_user.id
     art_beer = message.text.strip()
@@ -385,7 +387,7 @@ async def get_beer_info(message: Message, state: FSMContext):
             await otvet.delete()
         users_db[user_id]['zagruz_reply'] = ''
 
-    if art_beer in bier_dict['beer_keys']:
+    if art_beer.lower() in bier_dict['beer_keys']:
         users_db[user_id]['look_now'] = art_beer
         needed_beer = bier_dict[art_beer]
         foto_beer = needed_beer.foto

@@ -9,3 +9,5 @@ class Beer_Art:
         self.comments = []
         self.like = 0
         self.total = 0
+
+

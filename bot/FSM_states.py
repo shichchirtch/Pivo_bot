@@ -1,5 +1,5 @@
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.fsm.storage.redis import RedisStorage, Redis
+from aiogram.fsm.storage.redis import RedisStorage, Redis, StorageKey
 from config import settings
 
 using_redis = Redis(host=settings.REDIS_HOST)

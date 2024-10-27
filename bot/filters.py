@@ -32,7 +32,6 @@ class WRITE_REVIEW(BaseFilter):
         return False
 
 
-
 class STAR_EVAL(BaseFilter):
     async def __call__(self, callback: CallbackQuery):
         if callback.data == 'star_likes':
