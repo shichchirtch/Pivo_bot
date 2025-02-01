@@ -361,10 +361,10 @@ async def write_review(message: Message, state: FSMContext):
 @ch_router.message(Command('catalog'), StateFilter(FSM_ST.after_start))
 async def catalog_beer(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    start_beer_key = bier_dict['beer_keys'][0]
+    index = users_db[user_id]['beer_index']
+    start_beer_key = bier_dict['beer_keys'][index]
     start_beer_art = bier_dict[start_beer_key.capitalize()]
     name_beer = start_beer_art.name
-    index = users_db[user_id]['beer_index']
 
     desc = f'<b>{name_beer}</b>\n\n{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
     start_page = await message.answer_photo(
