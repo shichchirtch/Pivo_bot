@@ -62,13 +62,13 @@ def create_pagination_keyboard_cat(beer_name:str, page=1 ) -> InlineKeyboardMark
     if page ==0:
         page =1
     forward_button = InlineKeyboardButton(text=f'>>', callback_data='forward')
-    middle_button = InlineKeyboardButton(text=f'{page} / {len(bier_dict)-11}', callback_data=f'{beer_name}')
+    middle_button = InlineKeyboardButton(text=f'{page} / {len(bier_dict["cat"])}', callback_data=f'{beer_name}')
     backward_button = InlineKeyboardButton(text='<<', callback_data='backward')
     if page == 1:
         pagination_keyboard = InlineKeyboardMarkup(
             inline_keyboard=[[middle_button, forward_button]])
         return pagination_keyboard
-    elif 1 < page < (len(bier_dict)-11):
+    elif 1 < page < (len(bier_dict["cat"])):
         pagination_keyboard = InlineKeyboardMarkup(
             inline_keyboard=[[backward_button, middle_button, forward_button]])
         return pagination_keyboard
