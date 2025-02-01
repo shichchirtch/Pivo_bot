@@ -71,8 +71,9 @@ def create_pagination_keyboard_cat(beer_name:str, page=1 ) -> InlineKeyboardMark
             inline_keyboard=[[backward_button, middle_button, forward_button]])
         return pagination_keyboard
     else:
+
         pagination_keyboard = InlineKeyboardMarkup(
-            inline_keyboard=[[backward_button, middle_button]])
+            inline_keyboard=[[backward_button, middle_button, forward_button]])
         return pagination_keyboard
 
 

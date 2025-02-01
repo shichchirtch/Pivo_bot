@@ -157,6 +157,8 @@ async def page_moving(callback: CallbackQuery):
     shift = -1 if callback.data == 'backward' else 1
     print('shift = ', shift)
     us_beer_index = users_db[user_id]['beer_index'] + shift
+    if us_beer_index == (len(bier_dict['cat']) +1):
+        us_beer_index = 0
     users_db[user_id]['beer_index'] = us_beer_index
 
     beer_art_name = bier_dict['cat'][us_beer_index]
