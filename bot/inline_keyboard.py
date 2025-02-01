@@ -1,23 +1,23 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 
-def create_pagination_keyboard(page=1) -> InlineKeyboardMarkup:
-    print('We are into create_pagination_keyboard')
-    forward_button = InlineKeyboardButton(text=f'>>', callback_data='forward')
-    # middle_button = InlineKeyboardButton(text=f'{page} / {len(pagin_dict)}', callback_data=f'{page} / {len(pagin_dict)}')
-    backward_button = InlineKeyboardButton(text='<<', callback_data='backward')
-    if page == 1:
-        pagination_keyboard = InlineKeyboardMarkup(
-            inline_keyboard=[[forward_button]])
-        return pagination_keyboard
-    elif 1 < page < 10: # pagin_dict
-        pagination_keyboard = InlineKeyboardMarkup(
-            inline_keyboard=[[backward_button, forward_button]])
-        return pagination_keyboard
-    else:
-        pagination_keyboard = InlineKeyboardMarkup(
-            inline_keyboard=[[backward_button]])
-        return pagination_keyboard
+# def create_pagination_keyboard(page=1) -> InlineKeyboardMarkup:
+#     print('We are into create_pagination_keyboard')
+#     forward_button = InlineKeyboardButton(text=f'>>', callback_data='forward')
+#     # middle_button = InlineKeyboardButton(text=f'{page} / {len(pagin_dict)}', callback_data=f'{page} / {len(pagin_dict)}')
+#     backward_button = InlineKeyboardButton(text='<<', callback_data='backward')
+#     if page == 1:
+#         pagination_keyboard = InlineKeyboardMarkup(
+#             inline_keyboard=[[forward_button]])
+#         return pagination_keyboard
+#     elif 1 < page < 10: # pagin_dict
+#         pagination_keyboard = InlineKeyboardMarkup(
+#             inline_keyboard=[[backward_button, forward_button]])
+#         return pagination_keyboard
+#     else:
+#         pagination_keyboard = InlineKeyboardMarkup(
+#             inline_keyboard=[[backward_button]])
+#         return pagination_keyboard
 
 
 otzyv_button = InlineKeyboardButton(text='Посмотреть отзывы', callback_data='view_review')
