@@ -58,6 +58,7 @@ async def return_stars_list(user_tg_id:int):
 
 def create_pagination_keyboard_cat(beer_name:str, page=1 ) -> InlineKeyboardMarkup:
     print('\n\n61 len(bier_dict = ', len(bier_dict))
+    print('page = ', page)
     forward_button = InlineKeyboardButton(text=f'>>', callback_data='forward')
     middle_button = InlineKeyboardButton(text=f'{page} / {len(bier_dict)}', callback_data=f'{beer_name}')
     backward_button = InlineKeyboardButton(text='<<', callback_data='backward')
