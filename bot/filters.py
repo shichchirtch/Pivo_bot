@@ -64,7 +64,7 @@ class EXIT_FILTER(BaseFilter):
 class EXCLUDE_COMMAND(BaseFilter):
     async def __call__(self, message: Message):
         if message.text:
-            if message.text in ('/show_collection', '/add_new_beer', '/poisk', '/help'):
+            if message.text in ('/show_collection', '/add_new_beer', '/poisk', '/help', '/catalog'):
                 return False
             elif message.text.startswith('/show_collection') or message.text.endswith('/show_collection'):
                 return False
