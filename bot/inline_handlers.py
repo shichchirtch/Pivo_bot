@@ -157,12 +157,27 @@ async def page_moving(callback: CallbackQuery):
     shift = -1 if callback.data == 'backward' else 1
     print('shift = ', shift)
     beer_key_list = bier_dict['beer_keys']
-
+    us_beer_index = users_db['beer_index'] + shift
+    users_db['beer_index'] = us_beer_index
     print(*beer_key_list, sep='\n')
-    beer_art_name = beer_key_list[shift]
+    beer_art_name = beer_key_list[us_beer_index]
+
+
+    if beer_art_name in brack_list:
+        if beer_art_name == 'Жигули Export':
+            beer_art_name= 'Жигули EXPORT'
+        elif beer_art_name == 'Natakhtari Gold':
+            beer_art_name = 'Natakhtari GOLD'
+        elif beer_art_name == 'Чешский Старовар':
+            beer_art_name = 'Чешский старовар'
+        elif beer_art_name == 'Букет Чувашии Пшеничное':
+            beer_art_name = 'Букет Чувашии пшеничное'
+
     if beer_art_name not in bier_dict:
         beer_key_list.remove(beer_art_name)
-        beer_art_name = beer_key_list[shift+1]
+        us_beer_index = users_db['beer_index'] + shift + 1
+        users_db['beer_index'] = us_beer_index
+        beer_art_name = beer_key_list[us_beer_index]
     if ' ' in beer_art_name:
         temp = beer_art_name.split()
         s = ''
@@ -171,8 +186,8 @@ async def page_moving(callback: CallbackQuery):
         beer_art_name = s[:-1]
     else:
         beer_art_name = beer_art_name.capitalize()
-    index_beer = beer_key_list.index(beer_art_name) + shift
-    print('index_beer = ', index_beer)
+
+
     beer_art = bier_dict[beer_art_name]
     beer_art_id = beer_art.foto
     name_beer = beer_art.name
@@ -181,7 +196,7 @@ async def page_moving(callback: CallbackQuery):
         await callback.message.edit_media(
             media=InputMediaPhoto(
                 media=beer_art_id, caption=desc),
-            reply_markup=create_pagination_keyboard_cat(name_beer, index_beer)
+            reply_markup=create_pagination_keyboard_cat(name_beer, us_beer_index)
         )
     except TelegramBadRequest:
         print('Into Exeption')

@@ -5,7 +5,8 @@ user_dict = {
     'temp_msg':'',
     'star_msg':'',
     'zagruz_data':'',
-    'zagruz_reply':''
+    'zagruz_reply':'',
+    'beer_index':1
 
 }
 
