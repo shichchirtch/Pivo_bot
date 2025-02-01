@@ -178,7 +178,7 @@ async def page_moving(callback: CallbackQuery):
         await callback.message.edit_media(
             media=InputMediaPhoto(
                 media=beer_art_id, caption=desc),
-            reply_markup=create_pagination_keyboard(name_beer, shift)
+            reply_markup=create_pagination_keyboard_cat(name_beer, shift)
         )
     except TelegramBadRequest:
         print('Into Exeption')

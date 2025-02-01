@@ -368,7 +368,7 @@ async def catalog_beer(message: Message, state: FSMContext):
     start_page = await message.answer_photo(
                 photo=start_beer_art.foto,
                 caption=desc,
-                reply_markup=create_pagination_keyboard(name_beer)
+                reply_markup=create_pagination_keyboard_cat(name_beer)
             )
     users_db[user_id]['zagruz_data'] = start_page
 
