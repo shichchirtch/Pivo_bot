@@ -363,19 +363,9 @@ async def write_review(message: Message, state: FSMContext):
 async def catalog_beer(message: Message, state: FSMContext):
     user_id = message.from_user.id
     index = users_db[user_id]['beer_index']
-    start_beer_key = bier_dict['beer_keys'][index]
-    print("************", *bier_dict.keys(), sep='\n')
-    if ' ' in start_beer_key:
-        temp = start_beer_key.split()
-        s = ''
-        for teil in temp:
-            s += teil.capitalize() + ' '
-        beer_art_name = s[:-1]
-    else:
-        beer_art_name = start_beer_key.capitalize()
-    start_beer_art = bier_dict[beer_art_name]
+    start_beer_key = bier_dict['cat'][index]
+    start_beer_art = bier_dict[start_beer_key]
     name_beer = start_beer_art.name
-
     desc = f'<b>{name_beer}</b>\n\n{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
     start_page = await message.answer_photo(
                 photo=start_beer_art.foto,
