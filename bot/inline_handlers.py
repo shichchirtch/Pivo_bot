@@ -158,6 +158,10 @@ async def page_moving(callback: CallbackQuery):
     beer_key_list = bier_dict['beer_keys']
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[shift]
+    if beer_art_name not in bier_dict:
+        beer_key_list.remove(beer_art_name)
+        beer_art_name = beer_key_list[shift+1]
+
     beer_art = bier_dict[beer_art_name]
     desc = f'{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
     try:
