@@ -3,7 +3,7 @@ from filters import *
 from aiogram.filters import StateFilter
 import asyncio
 from beer_art_class import bier_dict
-from aiogram.types import CallbackQuery
+from aiogram.types import  CallbackQuery, InputMediaPhoto
 from database import users_db
 from aiogram.exceptions import TelegramBadRequest
 from beer_collection import create_one_button_keyboard
@@ -150,4 +150,20 @@ async def process_evaluation(callback: CallbackQuery):
     await att.delete()
 
 
-
+@inline_router.callback_query(MOVE_PAGE())
+async def page_moving(callback: CallbackQuery):
+    print(f'{callback.data = }')
+    shift = -1 if callback.data == 'backward' else 1
+    user_id = callback.from_user.id
+    beer_key_list = bier_dict['beer_keys']
+    beer_art = beer_key_list[shift]
+    desc = f'{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
+    try:
+        await callback.message.edit_media(
+            media=InputMediaPhoto(
+                media=bier_dict, caption=desc),
+            reply_markup=create_pagination_keyboard(shift)
+        )
+    except TelegramBadRequest:
+        print('Into Exeption')
+    await callback.answer()

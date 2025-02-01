@@ -1,5 +1,7 @@
 from postgress_table import session_marker, User
 from sqlalchemy import select
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from beer_art_class import bier_dict
 
 async def insert_new_user_in_table(user_tg_id: int, name: str):
     async with session_marker() as session:
@@ -51,3 +53,26 @@ async def return_stars_list(user_tg_id:int):
         query = await session.execute(select(User).filter(User.tg_us_id == user_tg_id))
         needed_data = query.scalar()
         return needed_data.evaluated_beer
+
+
+keys_list = bier_dict['beer_keys']
+
+def create_pagination_keyboard(page=1) -> InlineKeyboardMarkup:
+    print('key_list beer art = ', keys_list[page])
+    forward_button = InlineKeyboardButton(text=f'>>', callback_data='forward')
+    middle_button = InlineKeyboardButton(text=f'{page} / {len(keys_list)}', callback_data=f'{keys_list[page]}')
+    backward_button = InlineKeyboardButton(text='<<', callback_data='backward')
+    if page == 1:
+        pagination_keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[middle_button, forward_button]])
+        return pagination_keyboard
+    elif 1 < page < len(keys_list):
+        pagination_keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[backward_button, middle_button, forward_button]])
+        return pagination_keyboard
+    else:
+        pagination_keyboard = InlineKeyboardMarkup(
+            inline_keyboard=[[backward_button, middle_button]])
+        return pagination_keyboard
+
+

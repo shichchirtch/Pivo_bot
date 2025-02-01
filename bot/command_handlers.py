@@ -357,6 +357,19 @@ async def write_review(message: Message, state: FSMContext):
     await att.delete()
     await message.delete()
 
+@ch_router.message(Command('catalog'), StateFilter(FSM_ST.after_start))
+async def catalog_beer(message: Message, state: FSMContext):
+    user_id = message.from_user.id
+    await state.set_state(FSM_ST.poisk)
+    start_beer_key = beer_collection['beer_keys'][0]
+    start_beer_art = beer_collection[start_beer_key]
+    desc = f'{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
+    start_page = await message.answer_photo(
+                photo=start_beer_art.foto,
+                caption=desc,
+                reply_markup=create_pagination_keyboard()
+            )
+    users_db[user_id]['zagruz_data'] = start_page
 
 
 @ch_router.message(Command('poisk'), StateFilter(FSM_ST.after_start))

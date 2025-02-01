@@ -83,7 +83,11 @@ class EXCLUDE_COMMAND(BaseFilter):
 
 
 
-
+class MOVE_PAGE(BaseFilter):
+    async def __call__(self, callback: CallbackQuery):
+        if callback.data in ['forward', 'backward']:
+            return True
+        return False
 
 
 
