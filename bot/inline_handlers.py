@@ -165,11 +165,12 @@ async def page_moving(callback: CallbackQuery):
     beer_art_name = beer_key_list[us_beer_index]
     print('beer_art_name = ', beer_art_name)
     if beer_art_name in ('лвiвске', 'Чуваш Тест', 'Лев','львов', 'Букет Чувашии Леди Ночь',
-                         'Lav', 'чуваш тест', 'Букет Чувашии Леди Ночь'.lower() ):
+                         'Lav', 'чуваш тест', 'Букет Чувашии Леди Ночь'.lower(), 'хз', 'львов' ):
         beer_key_list.remove(beer_art_name)
         print('pivo deleted')
         beer_art_name = beer_key_list[us_beer_index+4]
         shift  = shift+4
+        users_db[user_id]['beer_index'] = us_beer_index+4
 
     if ' ' in beer_art_name:
         temp = beer_art_name.split()
