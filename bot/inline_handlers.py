@@ -163,17 +163,6 @@ async def page_moving(callback: CallbackQuery):
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[us_beer_index]
 
-
-    if beer_art_name in brack_list:
-        if beer_art_name == 'Жигули Export':
-            beer_art_name= 'Жигули EXPORT'
-        elif beer_art_name == 'Natakhtari Gold':
-            beer_art_name = 'Natakhtari GOLD'
-        elif beer_art_name == 'Чешский Старовар':
-            beer_art_name = 'Чешский старовар'
-        elif beer_art_name == 'Букет Чувашии Пшеничное':
-            beer_art_name = 'Букет Чувашии пшеничное'
-
     if beer_art_name not in bier_dict:
         beer_key_list.remove(beer_art_name)
         us_beer_index = users_db[user_id]['beer_index'] + shift+1
@@ -188,6 +177,15 @@ async def page_moving(callback: CallbackQuery):
     else:
         beer_art_name = beer_art_name.capitalize()
 
+    if beer_art_name in brack_list:
+        if beer_art_name == 'Жигули Export':
+            beer_art_name= 'Жигули EXPORT'
+        elif beer_art_name == 'Natakhtari Gold':
+            beer_art_name = 'Natakhtari GOLD'
+        elif beer_art_name == 'Чешский Старовар':
+            beer_art_name = 'Чешский старовар'
+        elif beer_art_name == 'Букет Чувашии Пшеничное':
+            beer_art_name = 'Букет Чувашии пшеничное'
 
     beer_art = bier_dict[beer_art_name]
     beer_art_id = beer_art.foto
