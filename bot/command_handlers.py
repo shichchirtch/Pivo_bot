@@ -255,7 +255,7 @@ async def something_goes_wrong(message: Message, state: FSMContext):
 @ch_router.message(StateFilter(FSM_ST.after_start), Command('show_collection'))
 async def show_collection(message: Message):
     user_id = message.from_user.id
-    users_db[user_id]['beer_index'] = 1
+    users_db[user_id]['beer_index'] = 0
     temp_msg = users_db[user_id]['temp_msg']
     if temp_msg:
         with suppress(TelegramBadRequest):

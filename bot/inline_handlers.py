@@ -163,6 +163,7 @@ async def page_moving(callback: CallbackQuery):
     users_db[user_id]['beer_index'] = us_beer_index
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[us_beer_index]
+    print('beer_art_name = ', beer_art_name)
     if beer_art_name in ('Львовское', 'Чуваш Тест', 'Лев', 'Букет Чувашии Леди Ночь',
                          'Lav', 'чуваш тест', 'Букет Чувашии Леди Ночь'.lower() ):
         beer_key_list.remove(beer_art_name)
