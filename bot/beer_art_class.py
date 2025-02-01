@@ -5,7 +5,6 @@ cat= ['Odin-Trunk', 'Einfelbräu Helles Landbier', 'Lauterbacher','Maxl helles',
 'Corona Extra','Тагильской Karlovsbad','Paulaner Weissbier','Тагильское Bergauer Classic','Richmodis Kölsch',
 'Guinness Draught','Харбин Премиум','ICY','Leffe','Bolten','Microhistory','Kayaki','Franziskaner','MiXery','LAV',
 'Nikšićko tamno','Ursus','Ciucas','Früh Kölsch','Балтика 7','Tatra','Leikeim',
-'Allgäuer Büble Bier EdelWeissBie',
 'Reichenberger']
 
 

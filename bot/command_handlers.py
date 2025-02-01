@@ -366,7 +366,7 @@ async def catalog_beer(message: Message, state: FSMContext):
     start_beer_key = bier_dict['cat'][index]
     start_beer_art = bier_dict[start_beer_key]
     name_beer = start_beer_art.name
-    desc = f'<b>{name_beer}</b>\n\n{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
+    desc = f'{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
     start_page = await message.answer_photo(
                 photo=start_beer_art.foto,
                 caption=desc,
@@ -504,6 +504,8 @@ async def delete_position(message: Message):
     if deleted_record in bier_dict:
         del bier_dict[deleted_record]
         name_list.remove(deleted_record.lower())
+        if deleted_record in bier_dict['cat']:
+            bier_dict['cat'].remove(deleted_record)
         await message.answer('Перезапишите БД, если закончили    /dump\n\n'
                              'если нет - продолжайте удаление\n\n'
                              '/break')
