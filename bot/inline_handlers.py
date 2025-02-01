@@ -161,6 +161,14 @@ async def page_moving(callback: CallbackQuery):
     if beer_art_name not in bier_dict:
         beer_key_list.remove(beer_art_name)
         beer_art_name = beer_key_list[shift+1]
+    if ' ' in beer_art_name:
+        temp = beer_art_name.split()
+        s = ''
+        for teil in temp:
+            s+=teil.capitalize()+' '
+        beer_art_name = s[:-1]
+    else:
+        beer_art_name = beer_art_name.capitalize()
 
     beer_art = bier_dict[beer_art_name]
     desc = f'{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
