@@ -7,6 +7,9 @@ async def set_main_menu(bot):
         BotCommand(command='/help',
                    description='Как работать с ботом'),
 
+        BotCommand(command='/catalog',
+                   description='Пролистать каталог пива'),
+
         BotCommand(command='/show_collection',
                    description='Посмотреть коллекцию пива'),
 
