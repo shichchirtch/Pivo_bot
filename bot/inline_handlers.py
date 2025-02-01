@@ -155,7 +155,7 @@ async def page_moving(callback: CallbackQuery):
     print(f'{callback.data = }')
     user_id = callback.from_user.id
     brack_list = ['Жигули Export', 'Natakhtari Gold', 'Чешский Старовар',
-                  'Букет Чувашии Пшеничное', 'Львовское', 'Чуваш Тест', 'Лев']
+                  'Букет Чувашии Пшеничное', 'Львовское', 'Чуваш Тест', 'Лев', 'natakhtari gold']
     shift = -1 if callback.data == 'backward' else 1
     print('shift = ', shift)
     beer_key_list = bier_dict['beer_keys']
@@ -184,7 +184,7 @@ async def page_moving(callback: CallbackQuery):
     if beer_art_name in brack_list:
         if beer_art_name == 'Жигули Export':
             beer_art_name = 'Жигули EXPORT'
-        elif beer_art_name == 'Natakhtari Gold':
+        elif beer_art_name == 'natakhtari gold':
             beer_art_name = 'Natakhtari GOLD'
         elif beer_art_name == 'Чешский Старовар':
             beer_art_name = 'Чешский старовар'
