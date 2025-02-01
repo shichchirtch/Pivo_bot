@@ -184,9 +184,10 @@ async def add_desc(message: Message, state: FSMContext):
     new_beer_art['desc'] = name_plus_desc
 
 
-    bier_dict[beer_name] = Beer_Art(name=beer_name, foto=foto, descripion=name_plus_desc)
+    bier_dict[beer_name.lower()] = Beer_Art(name=beer_name, foto=foto, descripion=name_plus_desc)
     print('beer_name = ', beer_name)
     bier_dict.get('beer_keys', []).append(beer_name.lower()) # Добавляю пиво в список названий, чтобы потом оттуда его доставать, сверять и т.д
+    bier_dict.get('cat', []).append(beer_name.lower())  # Добавляю ключ для каталога
     test = bier_dict[beer_name]
     print('test.comments = ', test.comments, 'test.name = ', test.name)
     await state.set_state(FSM_ST.after_start)
@@ -363,6 +364,7 @@ async def catalog_beer(message: Message, state: FSMContext):
     user_id = message.from_user.id
     index = users_db[user_id]['beer_index']
     start_beer_key = bier_dict['beer_keys'][index]
+    print("************", *bier_dict.keys(), sep='\n')
     if ' ' in start_beer_key:
         temp = start_beer_key.split()
         s = ''
