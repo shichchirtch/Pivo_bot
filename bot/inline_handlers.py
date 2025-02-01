@@ -162,12 +162,6 @@ async def page_moving(callback: CallbackQuery):
     users_db[user_id]['beer_index'] = us_beer_index
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[us_beer_index]
-
-    if beer_art_name not in bier_dict:
-        # beer_key_list.remove(beer_art_name)
-        us_beer_index = users_db[user_id]['beer_index'] + shift
-        users_db[user_id]['beer_index'] = us_beer_index
-        beer_art_name = beer_key_list[us_beer_index]
     if ' ' in beer_art_name:
         temp = beer_art_name.split()
         s = ''
@@ -179,13 +173,40 @@ async def page_moving(callback: CallbackQuery):
 
     if beer_art_name in brack_list:
         if beer_art_name == 'Жигули Export':
-            beer_art_name= 'Жигули EXPORT'
+            beer_art_name = 'Жигули EXPORT'
         elif beer_art_name == 'Natakhtari Gold':
             beer_art_name = 'Natakhtari GOLD'
         elif beer_art_name == 'Чешский Старовар':
             beer_art_name = 'Чешский старовар'
         elif beer_art_name == 'Букет Чувашии Пшеничное':
             beer_art_name = 'Букет Чувашии пшеничное'
+
+    if beer_art_name not in bier_dict:
+        print('us_beer_index', us_beer_index)
+        us_beer_index = users_db[user_id]['beer_index'] + shift
+        print('us_beer_index', us_beer_index)
+        users_db[user_id]['beer_index'] = us_beer_index
+        beer_art_name = beer_key_list[us_beer_index]
+        if ' ' in beer_art_name:
+            temp = beer_art_name.split()
+            s = ''
+            for teil in temp:
+                s += teil.capitalize() + ' '
+            beer_art_name = s[:-1]
+        else:
+            beer_art_name = beer_art_name.capitalize()
+
+        if beer_art_name in brack_list:
+            if beer_art_name == 'Жигули Export':
+                beer_art_name = 'Жигули EXPORT'
+            elif beer_art_name == 'Natakhtari Gold':
+                beer_art_name = 'Natakhtari GOLD'
+            elif beer_art_name == 'Чешский Старовар':
+                beer_art_name = 'Чешский старовар'
+            elif beer_art_name == 'Букет Чувашии Пшеничное':
+                beer_art_name = 'Букет Чувашии пшеничное'
+
+
 
     beer_art = bier_dict[beer_art_name]
     beer_art_id = beer_art.foto
