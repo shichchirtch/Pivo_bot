@@ -153,9 +153,11 @@ async def process_evaluation(callback: CallbackQuery):
 @inline_router.callback_query(MOVE_PAGE())
 async def page_moving(callback: CallbackQuery):
     print(f'{callback.data = }')
+    brack_list = ['Жигули Export', 'Natakhtari Gold', 'Чешский Старовар', 'Букет Чувашии Пшеничное']
     shift = -1 if callback.data == 'backward' else 1
     print('shift = ', shift)
     beer_key_list = bier_dict['beer_keys']
+
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[shift]
     if beer_art_name not in bier_dict:
@@ -169,7 +171,8 @@ async def page_moving(callback: CallbackQuery):
         beer_art_name = s[:-1]
     else:
         beer_art_name = beer_art_name.capitalize()
-
+    index_beer = beer_key_list.index(beer_art_name) + shift
+    print('index_beer = ', index_beer)
     beer_art = bier_dict[beer_art_name]
     beer_art_id = beer_art.foto
     name_beer = beer_art.name
@@ -178,7 +181,7 @@ async def page_moving(callback: CallbackQuery):
         await callback.message.edit_media(
             media=InputMediaPhoto(
                 media=beer_art_id, caption=desc),
-            reply_markup=create_pagination_keyboard_cat(name_beer, shift)
+            reply_markup=create_pagination_keyboard_cat(name_beer, index_beer)
         )
     except TelegramBadRequest:
         print('Into Exeption')
