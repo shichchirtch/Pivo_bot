@@ -171,11 +171,13 @@ async def page_moving(callback: CallbackQuery):
         beer_art_name = beer_art_name.capitalize()
 
     beer_art = bier_dict[beer_art_name]
-    desc = f'{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
+    beer_art_id = beer_art.foto
+    name_beer = beer_art.name
+    desc = f'<b>{name_beer}</b>\n\n{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
     try:
         await callback.message.edit_media(
             media=InputMediaPhoto(
-                media=beer_art, caption=desc),
+                media=beer_art_id, caption=desc),
             reply_markup=create_pagination_keyboard(shift)
         )
     except TelegramBadRequest:

@@ -363,7 +363,8 @@ async def catalog_beer(message: Message, state: FSMContext):
     await state.set_state(FSM_ST.poisk)
     start_beer_key = bier_dict['beer_keys'][0]
     start_beer_art = bier_dict[start_beer_key.capitalize()]
-    desc = f'{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
+    name_beer = start_beer_art.name
+    desc = f'<b>{name_beer}</b>\n\n{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
     start_page = await message.answer_photo(
                 photo=start_beer_art.foto,
                 caption=desc,
