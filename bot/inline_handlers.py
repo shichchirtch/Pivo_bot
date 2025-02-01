@@ -154,8 +154,9 @@ async def process_evaluation(callback: CallbackQuery):
 async def page_moving(callback: CallbackQuery):
     print(f'{callback.data = }')
     shift = -1 if callback.data == 'backward' else 1
-    user_id = callback.from_user.id
+    print('shift = ', shift)
     beer_key_list = bier_dict['beer_keys']
+    print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[shift]
     beer_art = bier_dict[beer_art_name]
     desc = f'{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
