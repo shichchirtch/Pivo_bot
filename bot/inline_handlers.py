@@ -185,7 +185,7 @@ async def page_moving(callback: CallbackQuery):
         if beer_art_name == 'Жигули Export':
             beer_art_name = 'Жигули EXPORT'
         elif beer_art_name == 'natakhtari gold':
-            beer_art_name = 'Natakhtari GOLD'
+            beer_art_name = 'Natakhtari GOLD'.upper()
         elif beer_art_name == 'Чешский Старовар':
             beer_art_name = 'Чешский старовар'
         elif beer_art_name == 'Букет Чувашии Пшеничное':
