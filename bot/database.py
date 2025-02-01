@@ -6,8 +6,7 @@ user_dict = {
     'star_msg':'',
     'zagruz_data':'',
     'zagruz_reply':'',
-    'beer_index':1
-
+    'beer_index':0
 }
 
 # Инициализируем "базу данных"
