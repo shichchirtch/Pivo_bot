@@ -280,7 +280,7 @@ async def show_collection(message: Message):
 
 
     if bier_dict:
-        quantity_arts = len(bier_dict)-1
+        quantity_arts = len(bier_dict)-3
         vull_collection = f'{beer_collection}\nОбщее количество сортов - <b>{quantity_arts}</b>'
         if len(bier_dict)<101:
             att = await message.answer(
