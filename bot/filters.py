@@ -15,6 +15,7 @@ class PRE_START(BaseFilter):
 class NAME_CALLBACK_DATA(BaseFilter):
     async def __call__(self, callback: CallbackQuery):
         if callback.data in bier_dict:
+            print('NAME_CALLBACK_DATA works')
             return True
         return False
 

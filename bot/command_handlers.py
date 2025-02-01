@@ -369,6 +369,7 @@ async def catalog_beer(message: Message, state: FSMContext):
                 caption=desc,
                 reply_markup=create_pagination_keyboard_cat(name_beer)
             )
+    users_db[user_id]['beer_index'] = 1
     users_db[user_id]['zagruz_data'] = start_page
 
 
