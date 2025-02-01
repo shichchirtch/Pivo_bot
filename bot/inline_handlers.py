@@ -164,8 +164,8 @@ async def page_moving(callback: CallbackQuery):
     beer_art_name = beer_key_list[us_beer_index]
 
     if beer_art_name not in bier_dict:
-        beer_key_list.remove(beer_art_name)
-        us_beer_index = users_db[user_id]['beer_index'] + shift+1
+        # beer_key_list.remove(beer_art_name)
+        us_beer_index = users_db[user_id]['beer_index'] + shift
         users_db[user_id]['beer_index'] = us_beer_index
         beer_art_name = beer_key_list[us_beer_index]
     if ' ' in beer_art_name:
