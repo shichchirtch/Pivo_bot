@@ -365,6 +365,7 @@ async def catalog_beer(message: Message, state: FSMContext):
     start_beer_art = bier_dict[start_beer_key.capitalize()]
     name_beer = start_beer_art.name
     index = users_db[user_id]['beer_index']
+
     desc = f'<b>{name_beer}</b>\n\n{start_beer_art.description}\n\nRating  {start_beer_art.rating}\n\nReview {len(start_beer_art.comments)}'
     start_page = await message.answer_photo(
                 photo=start_beer_art.foto,
