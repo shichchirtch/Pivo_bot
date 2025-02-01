@@ -180,6 +180,8 @@ async def page_moving(callback: CallbackQuery):
             beer_art_name = 'Чешский старовар'
         elif beer_art_name == 'Букет Чувашии Пшеничное':
             beer_art_name = 'Букет Чувашии пшеничное'
+        elif beer_art_name == 'Львовское':
+            beer_art_name = 'Львiвске'
 
     if beer_art_name not in bier_dict:
         print('us_beer_index', us_beer_index)
@@ -205,6 +207,8 @@ async def page_moving(callback: CallbackQuery):
                 beer_art_name = 'Чешский старовар'
             elif beer_art_name == 'Букет Чувашии Пшеничное':
                 beer_art_name = 'Букет Чувашии пшеничное'
+            elif beer_art_name == 'Львовское':
+                beer_art_name ='Львiвске'
 
 
 

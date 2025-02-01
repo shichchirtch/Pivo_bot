@@ -360,7 +360,6 @@ async def write_review(message: Message, state: FSMContext):
 @ch_router.message(Command('catalog'), StateFilter(FSM_ST.after_start))
 async def catalog_beer(message: Message, state: FSMContext):
     user_id = message.from_user.id
-    await state.set_state(FSM_ST.poisk)
     start_beer_key = bier_dict['beer_keys'][0]
     start_beer_art = bier_dict[start_beer_key.capitalize()]
     name_beer = start_beer_art.name
