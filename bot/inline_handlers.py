@@ -153,12 +153,13 @@ async def process_evaluation(callback: CallbackQuery):
 @inline_router.callback_query(MOVE_PAGE())
 async def page_moving(callback: CallbackQuery):
     print(f'{callback.data = }')
+    user_id = callback.from_user.id
     brack_list = ['Жигули Export', 'Natakhtari Gold', 'Чешский Старовар', 'Букет Чувашии Пшеничное']
     shift = -1 if callback.data == 'backward' else 1
     print('shift = ', shift)
     beer_key_list = bier_dict['beer_keys']
-    us_beer_index = users_db['beer_index'] + shift
-    users_db['beer_index'] = us_beer_index
+    us_beer_index = users_db[user_id]['beer_index'] + shift
+    users_db[user_id]['beer_index'] = us_beer_index
     print(*beer_key_list, sep='\n')
     beer_art_name = beer_key_list[us_beer_index]
 
@@ -175,8 +176,8 @@ async def page_moving(callback: CallbackQuery):
 
     if beer_art_name not in bier_dict:
         beer_key_list.remove(beer_art_name)
-        us_beer_index = users_db['beer_index'] + shift + 1
-        users_db['beer_index'] = us_beer_index
+        us_beer_index = users_db[user_id]['beer_index'] + shift+1
+        users_db[user_id]['beer_index'] = us_beer_index
         beer_art_name = beer_key_list[us_beer_index]
     if ' ' in beer_art_name:
         temp = beer_art_name.split()
