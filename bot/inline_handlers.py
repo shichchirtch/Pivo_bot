@@ -168,7 +168,7 @@ async def page_moving(callback: CallbackQuery):
     beer_art = bier_dict[beer_art_name]
     beer_art_id = beer_art.foto
     name_beer = beer_art.name
-    desc = f'<b>{name_beer}</b>\n\n{beer_art.description}\n\nRating  {beer_art.rating}\n\nReview {len(beer_art.comments)}'
+    desc = f'<b>{name_beer}</b>\n\n{beer_art.description}\n\nRating  <b>{beer_art.rating}</b>\n\nReview <b>{len(beer_art.comments)}</b>'
     try:
         await callback.message.edit_media(
             media=InputMediaPhoto(
