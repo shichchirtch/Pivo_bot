@@ -17,6 +17,9 @@ class NAME_CALLBACK_DATA(BaseFilter):
         if callback.data in bier_dict:
             print('NAME_CALLBACK_DATA works')
             return True
+        elif callback.data.lower() in bier_dict:
+            print('NAME_CALLBACK_DATA.lower() works')
+            return True
         return False
 
 

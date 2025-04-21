@@ -184,7 +184,7 @@ async def add_desc(message: Message, state: FSMContext):
     new_beer_art['desc'] = name_plus_desc
 
 
-    bier_dict[beer_name.lower()] = Beer_Art(name=beer_name, foto=foto, descripion=name_plus_desc)
+    bier_dict[beer_name] = Beer_Art(name=beer_name, foto=foto, descripion=name_plus_desc)
     print('beer_name = ', beer_name)
     bier_dict.get('beer_keys', []).append(beer_name.lower()) # Добавляю пиво в список названий, чтобы потом оттуда его доставать, сверять и т.д
     bier_dict.get('cat', []).append(beer_name.lower())  # Добавляю ключ для каталога
@@ -282,10 +282,18 @@ async def show_collection(message: Message):
     if bier_dict:
         quantity_arts = len(bier_dict)-3
         vull_collection = f'{beer_collection}\nОбщее количество сортов - <b>{quantity_arts}</b>'
+        kluchy = bier_dict.keys()
+        kluch_arr = []
+        for kluch in kluchy:
+            if kluch in  ('рибачка соня', 'hacker pschorr', 'paderborner' , 'steam brew'):
+                kluch_arr.append(kluch.capitalize())
+            else:
+                kluch_arr.append(kluch)
+
         if len(bier_dict)<101:
             att = await message.answer(
                 text=vull_collection,
-                reply_markup=create_beer_collection_keyboard(*bier_dict.keys()))
+                reply_markup=create_beer_collection_keyboard(*kluch_arr))
             users_db[user_id]['zagruz_reply'] = att
         else:
             key_list = []

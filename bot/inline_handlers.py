@@ -24,7 +24,10 @@ async def process_beer_art_press(callback: CallbackQuery):
     user_id = callback.from_user.id
     print('callbackdata = ', callback.data, type(callback.data))
     users_db[user_id]['look_now'] = callback.data
-    beer_key = callback.data   # получаю ключ - названеи пива
+    beer_key = callback.data  # получаю ключ - названеи пива
+    if callback.data in ('Рибачка соня', 'Hacker pschorr', 'Paderborner' , 'Steam brew'):
+        beer_key = callback.data.lower()
+
     needed_beer = bier_dict[beer_key]  # получаю ЭК Berr_Art
     foto_beer = needed_beer.foto   # Получаю фото
     description = needed_beer.description   #  Получаю описание
