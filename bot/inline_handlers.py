@@ -27,6 +27,7 @@ async def process_beer_art_press(callback: CallbackQuery):
     beer_key = callback.data  # получаю ключ - названеи пива
     if callback.data in ('Рибачка соня', 'Hacker pschorr', 'Paderborner' , 'Steam brew'):
         beer_key = callback.data.lower()
+        users_db[user_id]['look_now'] = callback.data.lower()
 
     needed_beer = bier_dict[beer_key]  # получаю ЭК Berr_Art
     foto_beer = needed_beer.foto   # Получаю фото
@@ -76,6 +77,8 @@ async def process_beer_art_press(callback: CallbackQuery):
 async def process_show_review(callback: CallbackQuery):
     user_id = callback.from_user.id
     beer_key = users_db[user_id]['look_now']  #  Получаю название рассматриываемого пива
+    if callback.data in ('Рибачка соня', 'Hacker pschorr', 'Paderborner', 'Steam brew'):
+        beer_key = callback.data.lower()
     needed_beer = bier_dict[beer_key]   #  получаю ЭК Beer_Art
     otzyv_arr = needed_beer.comments  #  прлучаю список отзывов
     if otzyv_arr:  # Если есть отзывы
