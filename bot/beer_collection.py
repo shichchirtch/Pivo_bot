@@ -5,9 +5,10 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 def create_beer_collection_keyboard(*args) -> InlineKeyboardMarkup:
     # Создаем объект клавиатуры
     kb_builder = InlineKeyboardBuilder()
-    # Наполняем клавиатуру кнопками-закладками в порядке возрастания
+    # Наполняем клавиатуру кнопками  в порядке возрастания
     for button in sorted(args):
-        if button != 'beer_keys' or button !='cat':
+        print('button = ', button)
+        if button not in ('beer_keys','cat'):
             kb_builder.row(InlineKeyboardButton(
                 text=button,
                 callback_data=button))
