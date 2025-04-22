@@ -188,8 +188,8 @@ async def add_desc(message: Message, state: FSMContext):
     print('beer_name = ', beer_name)
     bier_dict.get('beer_keys', []).append(beer_name.lower()) # Добавляю пиво в список названий, чтобы потом оттуда его доставать, сверять и т.д
     bier_dict.get('cat', []).append(beer_name.lower())  # Добавляю ключ для каталога
-    test = bier_dict[beer_name.lower()]
-    print('test.comments = ', test.comments, 'test.name = ', test.name)
+    # test = bier_dict[beer_name.lower()]
+    # print('test.comments = ', test.comments, 'test.name = ', test.name)
     await state.set_state(FSM_ST.after_start)
 
     with suppress(TelegramBadRequest):
